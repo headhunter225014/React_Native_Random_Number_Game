@@ -1,29 +1,44 @@
 import { StatusBar } from 'expo-status-bar';
-import { StyleSheet, Text, ScrollView, ImageBackground } from 'react-native';
+import { StyleSheet, Text, ScrollView, ImageBackground, SafeAreaView } from 'react-native';
 import StartGameScreen from "./screens/StartGameScreen";
 import {LinearGradient} from "expo-linear-gradient";
 import {NativeBaseProvider } from "native-base";
 import SpinnerNative from "./screens/Spinner";
-
+import {useState} from "react";
+import GameScreen from "./screens/GameScreen";
+import Colors from "./constants/colors";
 
 
 export default function App() {
+    const [userNumber, SetUserNumber] = useState();
+
+    function pickedNumberHandler(pickedNumber) {
+        SetUserNumber(pickedNumber);
+    }
+
+    let screen = <StartGameScreen onPickNumber={pickedNumberHandler}/>;
+
+    if (userNumber) {
+        screen = <GameScreen userNumber={userNumber}/>;
+    }
 
   return (
       <>
           <NativeBaseProvider>
               <StatusBar  barStyle="light-content" hidden={false}/>
-              <LinearGradient colors={['#4e0329', '#ddb52f']} style={styles.container}>
+              <LinearGradient colors={[Colors.primary700, Colors.accent500]} style={styles.container}>
                 <ImageBackground
                     source={require('./assets/images/backgroundDice.png')}
                     resizeMode="cover"
                     style={styles.rootScreen}
                     imageStyle={styles.backgroundImage}>
-                    <ScrollView keyboardShouldPersistTaps='handled'
-                                bounces='false'>
-                        <StartGameScreen/>
-                        <SpinnerNative/>
-                    </ScrollView>
+                    <SafeAreaView style={styles.rootScreen}>
+                        <ScrollView keyboardShouldPersistTaps='handled'
+                                    bounces='false'>
+                            {screen}
+                            <SpinnerNative/>
+                        </ScrollView>
+                    </SafeAreaView>
                 </ImageBackground>
               </LinearGradient>
           </NativeBaseProvider>
