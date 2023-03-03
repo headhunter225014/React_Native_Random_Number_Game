@@ -22,7 +22,7 @@ const styles = StyleSheet.create({
     numberText: {
         color: Colors.accent500,
         fontSize: 38,
-        fontWeight: "bold"
+        fontWeight: 'bold'
     }
 });
 export default NumberContainer;

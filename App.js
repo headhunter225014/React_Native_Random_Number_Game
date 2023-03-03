@@ -7,19 +7,48 @@ import SpinnerNative from "./screens/Spinner";
 import {useState} from "react";
 import GameScreen from "./screens/GameScreen";
 import Colors from "./constants/colors";
+import GameOverScreen from "./screens/GameOverScreen";
+
+
+
 
 
 export default function App() {
-    const [userNumber, SetUserNumber] = useState();
+    const [userNumber, setUserNumber] = useState();
+    const [gamesIsOver, setGameIsOver] = useState(true);
+    const [guessRounds, setGuessRounds] = useState(0);
 
+    //sets userNumber to the input and also changes the gameOver var
     function pickedNumberHandler(pickedNumber) {
-        SetUserNumber(pickedNumber);
+        setUserNumber(pickedNumber);
+        setGameIsOver(false);
     }
 
+    function gameOverHandler(numberOfRounds){
+        setGameIsOver(true);
+        setGuessRounds(numberOfRounds);
+    }
+
+    function startNewGameHandler() {
+        setUserNumber(null);
+        setGuessRounds(0);
+    }
+
+    //var that holds the startGameScreen
     let screen = <StartGameScreen onPickNumber={pickedNumberHandler}/>;
 
+
+    //checks if user input number, if true change the screen var
     if (userNumber) {
-        screen = <GameScreen userNumber={userNumber}/>;
+        screen = <GameScreen userNumber={userNumber} onGameOver={gameOverHandler}/>;
+    }
+
+    //checks if the game is Over number is true and the user input number, change screen to Game Over
+    if (gamesIsOver && userNumber) {
+        screen = <GameOverScreen
+            userNumber={userNumber}
+            roundsNumber={guessRounds}
+            onStartNewGame={startNewGameHandler}/>
     }
 
   return (
@@ -36,7 +65,6 @@ export default function App() {
                         <ScrollView keyboardShouldPersistTaps='handled'
                                     bounces='false'>
                             {screen}
-                            <SpinnerNative/>
                         </ScrollView>
                     </SafeAreaView>
                 </ImageBackground>
