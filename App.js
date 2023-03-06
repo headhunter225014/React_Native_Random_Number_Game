@@ -1,5 +1,5 @@
 import { StatusBar } from 'expo-status-bar';
-import { StyleSheet, Text, ScrollView, ImageBackground, SafeAreaView } from 'react-native';
+import { StyleSheet, Text, ScrollView, ImageBackground, SafeAreaView, View, KeyboardAvoidingView } from 'react-native';
 import StartGameScreen from "./screens/StartGameScreen";
 import {LinearGradient} from "expo-linear-gradient";
 import {NativeBaseProvider } from "native-base";
@@ -62,10 +62,9 @@ export default function App() {
                     style={styles.rootScreen}
                     imageStyle={styles.backgroundImage}>
                     <SafeAreaView style={styles.rootScreen}>
-                        <ScrollView keyboardShouldPersistTaps='handled'
-                                    bounces='false'>
+                        <View style={{flex: 1}}>
                             {screen}
-                        </ScrollView>
+                        </View>
                     </SafeAreaView>
                 </ImageBackground>
               </LinearGradient>
